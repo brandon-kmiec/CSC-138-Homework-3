@@ -21,7 +21,7 @@ public final class WebServerA {
             Socket listenSocket = serverSocket.accept();
 
             // Construct an object to process the HTTP request message
-            HttpRequest request = new HttpRequest(listenSocket);
+            HttpRequestA request = new HttpRequestA(listenSocket);
 
             // Create a new thread to process the request
             Thread thread = new Thread(request);
@@ -33,12 +33,12 @@ public final class WebServerA {
 }//end WebServerA
 
 
-final class HttpRequest implements Runnable {
+final class HttpRequestA implements Runnable {
     final static String CRLF = "\r\n";
     Socket socket;
 
     // Constructor
-    public HttpRequest(Socket socket) throws Exception {
+    public HttpRequestA(Socket socket) throws Exception {
         this.socket = socket;
     }//end HttpRequest Constructor
 
