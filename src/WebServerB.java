@@ -96,7 +96,7 @@ final class HttpRequestB implements Runnable {
         os.writeBytes(statusLine);
 
         // Send the content type line
-        os.writeBytes(contentTypeLine); // TODO: 12/2/2023 socket write error on execution of this line
+        os.writeBytes(contentTypeLine); // TODO: 12/2/2023 software caused connection abort: socket write error on execution of this line (data might be formated wrong?)
 
         // Send a blank line to indicate the end of the header lines
         os.writeBytes(CRLF);
