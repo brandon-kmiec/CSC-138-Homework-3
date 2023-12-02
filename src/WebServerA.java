@@ -12,12 +12,13 @@ public final class WebServerA {
         int port = 6789;
 
         // Establish the listen socket
-        Socket listenSocket = new Socket();
+        ServerSocket serverSocket = new ServerSocket(port);
+//        Socket listenSocket = new Socket("127.0.0.1", port);
 
         // Process HTTP service requests in an infinite loop
         while (true) {
             // Listen for a TCP connection request
-            // TODO: 12/2/2023
+            Socket listenSocket = serverSocket.accept();
 
             // Construct an object to process the HTTP request message
             HttpRequest request = new HttpRequest(listenSocket);
@@ -53,7 +54,7 @@ final class HttpRequest implements Runnable {
     private void processRequest() throws Exception {
         // Get a reference to the socket's input and output stream
         InputStream is = socket.getInputStream();
-        DataOutputStream os = null; // TODO: 12/2/2023
+        OutputStream os = socket.getOutputStream();
 
         // Set up the input stream filters
         InputStreamReader isr = new InputStreamReader(is);
@@ -68,8 +69,9 @@ final class HttpRequest implements Runnable {
 
         // Get and display the header lines
         String headerLine = null;
-        while ((headerLine = br.readLine()).length() != 0)
+        while ((headerLine = br.readLine()).length() != 0) {
             System.out.println(headerLine);
+        }//end while
 
         // Close streams and socket
         os.close();
