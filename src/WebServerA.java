@@ -48,13 +48,13 @@ final class HttpRequestA implements Runnable {
             processRequest();
         } catch (Exception e) {
             System.out.println(e);
-        }
+        }//en try catch
     }//end run
 
     private void processRequest() throws Exception {
         // Get a reference to the socket's input and output stream
         InputStream is = socket.getInputStream();
-        OutputStream os = socket.getOutputStream();
+        DataOutputStream os = new DataOutputStream(socket.getOutputStream());
 
         // Set up the input stream filters
         InputStreamReader isr = new InputStreamReader(is);
