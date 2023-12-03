@@ -66,6 +66,7 @@ final class HttpRequestB implements Runnable {
         StringTokenizer tokens = new StringTokenizer(requestLine);
         tokens.nextToken();  // Skip over the method, which should be "GET"     TODO: assign to a variable for part C
         String fileName = tokens.nextToken();
+        String http = tokens.nextToken();
 
         // Prepend a "." so that file request is within the current directory
         fileName = "." + fileName;
@@ -84,10 +85,10 @@ final class HttpRequestB implements Runnable {
         String contentTypeLine = null;
         String entityBody = null;
         if (fileExists) {
-            statusLine = tokens.nextToken() + " 200 OK" + CRLF;
+            statusLine = http + " 200 OK" + CRLF;
             contentTypeLine = "Content-type: " + contentType(fileName) + CRLF;
         } else {
-            statusLine = "404 Not found" + CRLF;
+            statusLine = http + " 404 Not found" + CRLF;
             contentTypeLine = "Content-type: " + contentType(fileName) + CRLF;
             entityBody = "<HTML><HEAD><TITLE>Not Found</TITLE></HEAD><BODY>Not Found</BODY></HTML>";
         }//end if else
@@ -96,7 +97,7 @@ final class HttpRequestB implements Runnable {
         os.writeBytes(statusLine);
 
         // Send the content type line
-        os.writeBytes(contentTypeLine); // TODO: 12/2/2023 software caused connection abort: socket write error on execution of this line (data might be formated wrong?)
+        os.writeBytes(contentTypeLine);
 
         // Send a blank line to indicate the end of the header lines
         os.writeBytes(CRLF);
@@ -139,13 +140,13 @@ final class HttpRequestB implements Runnable {
     private static String contentType(String fileName) {
         if (fileName.endsWith(".htm") || fileName.endsWith(".html")) {
             return "text/html";
-        }
+        }//end if
         if (fileName.endsWith(".gif")) {
             return "image/gif";
-        }
+        }//end if
         if (fileName.endsWith(".jpeg")) {
             return "image/jpeg";
-        }
+        }//end if
         return "application/octet-stream";
     }//end contentType
 }//end HttpRequest
