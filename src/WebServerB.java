@@ -149,4 +149,4 @@ final class HttpRequestB implements Runnable {
         }//end if
         return "application/octet-stream";
     }//end contentType
-}//end HttpRequest
+}//end HttpRequestB
