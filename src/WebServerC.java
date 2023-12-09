@@ -189,7 +189,8 @@ final class HttpRequestC implements Runnable {
         if (fileName.endsWith(".gif")) {
             return "image/gif";
         }//end if
-        if (fileName.endsWith(".jpeg") || fileName.endsWith(".jpg") || fileName.endsWith(".jpe")) {
+        if (fileName.endsWith(".jpeg") || fileName.endsWith(".jpg") || fileName.endsWith(".jpe") ||
+                fileName.endsWith(".jif") || fileName.endsWith(".jfif") || fileName.endsWith(".jfi")) {
             return "image/jpeg";
         }//end if
         return "application/octet-stream";
