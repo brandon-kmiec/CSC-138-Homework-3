@@ -64,7 +64,7 @@ final class HttpRequestB implements Runnable {
 
         // Extract the filename from the request line
         StringTokenizer tokens = new StringTokenizer(requestLine);
-        tokens.nextToken();  // Skip over the method, which should be "GET"     TODO: assign to a variable for part C
+        tokens.nextToken();  // Skip over the method, which should be "GET"
         String fileName = tokens.nextToken();
         String http = tokens.nextToken();
 

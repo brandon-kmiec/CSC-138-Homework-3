@@ -64,61 +64,106 @@ final class HttpRequestC implements Runnable {
 
         // Extract the filename from the request line
         StringTokenizer tokens = new StringTokenizer(requestLine);
-        tokens.nextToken();  // Skip over the method, which should be "GET"     TODO: assign to a variable for part C
+        String request = tokens.nextToken();
         String fileName = tokens.nextToken();
         String http = tokens.nextToken();
 
-        // Prepend a "." so that file request is within the current directory
-        fileName = "." + fileName;
+        // Display the request line if there is a HEAD request
+        if (requestLine.contains("HEAD")) {
+            // Display the request line
+            System.out.println();
+            System.out.println(requestLine);
 
-        // Open the requested file
-        FileInputStream fis = null;
-        boolean fileExists = true;
-        try {
-            fis = new FileInputStream(fileName);
-        } catch (FileNotFoundException e) {
-            fileExists = false;
-        }// end try catch
+            // Get and display the header lines
+            String headerLine = null;
+            while ((headerLine = br.readLine()).length() != 0) {
+                System.out.println(headerLine);
+            }//end while
+        }//end if
+        // Display the request file and construct a response message if there is a GET request
+        else if (requestLine.contains("GET")) {
+            // Prepend a "." so that file request is within the current directory
+            fileName = "." + fileName;
 
-        // Construct the response message
-        String statusLine = null;
-        String contentTypeLine = null;
-        String entityBody = null;
-        if (fileExists) {
-            statusLine = http + " 200 OK" + CRLF;
-            contentTypeLine = "Content-type: " + contentType(fileName) + CRLF;
-        } else {
-            statusLine = http + " 404 Not found" + CRLF;
-            contentTypeLine = "Content-type: " + contentType(fileName) + CRLF;
-            entityBody = "<HTML><HEAD><TITLE>Not Found</TITLE></HEAD><BODY>Not Found</BODY></HTML>";
-        }//end if else
+            // Open the requested file
+            FileInputStream fis = null;
+            boolean fileExists = true;
+            try {
+                fis = new FileInputStream(fileName);
+            } catch (FileNotFoundException e) {
+                fileExists = false;
+            }// end try catch
 
-        // Send the status line
-        os.writeBytes(statusLine);
+            // Construct the response message
+            String statusLine = null;
+            String contentTypeLine = null;
+            String entityBody = null;
+            if (fileExists) {
+                statusLine = http + " 200 OK" + CRLF;
+                contentTypeLine = "Content-type: " + contentType(fileName) + CRLF;
+            } else {
+                statusLine = http + " 404 Not found" + CRLF;
+                contentTypeLine = "Content-type: " + contentType(fileName) + CRLF;
+                entityBody = "<HTML><HEAD><TITLE>Not Found</TITLE></HEAD><BODY>Not Found</BODY></HTML>";
+            }//end if else
 
-        // Send the content type line
-        os.writeBytes(contentTypeLine);
+            // Send the status line
+            os.writeBytes(statusLine);
 
-        // Send a blank line to indicate the end of the header lines
-        os.writeBytes(CRLF);
+            // Send the content type line
+            os.writeBytes(contentTypeLine);
 
-        // Send the entity body
-        if (fileExists) {
-            sendBytes(fis, os);
-            fis.close();
-        } else {
+            // Send a blank line to indicate the end of the header lines
+            os.writeBytes(CRLF);
+
+            // Send the entity body
+            if (fileExists) {
+                sendBytes(fis, os);
+                fis.close();
+            } else {
+                os.writeBytes(entityBody);
+            }//end if else
+
+            // Display the request line
+            System.out.println();
+            System.out.println(requestLine);
+
+            // Get and display the header lines
+            String headerLine = null;
+            while ((headerLine = br.readLine()).length() != 0) {
+                System.out.println(headerLine);
+            }//end while
+        }//end else if
+        // Respond with 405 HTTP code if a method other than HEAD or GET is requested
+        else {
+            // Construct the response message
+            String statusLine = http + "405 Method Not Allowed" + CRLF;
+            String contentTypeLine = "Content-type: " + contentType(fileName) + CRLF;
+            String entityBody = "<HTML><HEAD><TITLE>Method Not Allowed</TITLE></HEAD>" +
+                    "<BODY>Method Not Allowed</BODY></HTML>";
+
+            // Send the status line
+            os.writeBytes(statusLine);
+
+            // Send the content type line
+            os.writeBytes(contentTypeLine);
+
+            // Send a blank line to indicate the end of the header lines
+            os.writeBytes(CRLF);
+
+            // Send the entity body
             os.writeBytes(entityBody);
-        }//end if else
 
-        // Display the request line
-        System.out.println();
-        System.out.println(requestLine);
+            // Display the request line
+            System.out.println();
+            System.out.println(requestLine);
 
-        // Get and display the header lines
-        String headerLine = null;
-        while ((headerLine = br.readLine()).length() != 0) {
-            System.out.println(headerLine);
-        }//end while
+            // Get and display the header lines
+            String headerLine = null;
+            while ((headerLine = br.readLine()).length() != 0) {
+                System.out.println(headerLine);
+            }//end while
+        }//end else
 
         // Close streams and socket
         os.close();
