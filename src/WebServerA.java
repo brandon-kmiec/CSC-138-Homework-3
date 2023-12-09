@@ -13,7 +13,6 @@ public final class WebServerA {
 
         // Establish the listen socket
         ServerSocket serverSocket = new ServerSocket(port);
-//        Socket listenSocket = new Socket("127.0.0.1", port);
 
         // Process HTTP service requests in an infinite loop
         while (true) {
@@ -48,7 +47,7 @@ final class HttpRequestA implements Runnable {
             processRequest();
         } catch (Exception e) {
             System.out.println(e);
-        }//en try catch
+        }//end try catch
     }//end run
 
     private void processRequest() throws Exception {

@@ -6,13 +6,13 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-public class WebServerC {
+public final class WebServerC {
     public static void main(String[] args) throws Exception {
         // Set the port number
         int port = 6789;
 
         // Establish the listen socket
-        ServerSocket serverSocket = new ServerSocket(port); // TODO: 12/2/2023 might not be ServerSocket?
+        ServerSocket serverSocket = new ServerSocket(port);
 
         // Process HTTP service requests in an infinite loop
         while (true) {
@@ -104,7 +104,7 @@ final class HttpRequestC implements Runnable {
             } else {
                 statusLine = http + " 404 Not found" + CRLF;
                 contentTypeLine = "Content-type: " + contentType(fileName) + CRLF;
-                entityBody = "<HTML><HEAD><TITLE>Not Found</TITLE></HEAD><BODY>Not Found</BODY></HTML>";
+                entityBody = "<HTML><HEAD><TITLE>404 Not Found</TITLE></HEAD><BODY>404 Not Found</BODY></HTML>";
             }//end if else
 
             // Send the status line
@@ -137,10 +137,10 @@ final class HttpRequestC implements Runnable {
         // Respond with 405 HTTP code if a method other than HEAD or GET is requested
         else {
             // Construct the response message
-            String statusLine = http + "405 Method Not Allowed" + CRLF;
+            String statusLine = http + " 405 Method Not Allowed" + CRLF;
             String contentTypeLine = "Content-type: " + contentType(fileName) + CRLF;
-            String entityBody = "<HTML><HEAD><TITLE>Method Not Allowed</TITLE></HEAD>" +
-                    "<BODY>Method Not Allowed</BODY></HTML>";
+            String entityBody = "<HTML><HEAD><TITLE>405 Method Not Allowed</TITLE></HEAD>" +
+                    "<BODY>405 Method Not Allowed</BODY></HTML>";
 
             // Send the status line
             os.writeBytes(statusLine);
@@ -189,7 +189,7 @@ final class HttpRequestC implements Runnable {
         if (fileName.endsWith(".gif")) {
             return "image/gif";
         }//end if
-        if (fileName.endsWith(".jpeg") || fileName.endsWith(".jpg")) {
+        if (fileName.endsWith(".jpeg") || fileName.endsWith(".jpg") || fileName.endsWith(".jpe")) {
             return "image/jpeg";
         }//end if
         return "application/octet-stream";

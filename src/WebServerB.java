@@ -6,13 +6,13 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-public class WebServerB {
+public final class WebServerB {
     public static void main(String[] args) throws Exception {
         // Set the port number
         int port = 6789;
 
         // Establish the listen socket
-        ServerSocket serverSocket = new ServerSocket(port); // TODO: 12/2/2023 might not be ServerSocket?
+        ServerSocket serverSocket = new ServerSocket(port);
 
         // Process HTTP service requests in an infinite loop
         while (true) {
@@ -144,7 +144,7 @@ final class HttpRequestB implements Runnable {
         if (fileName.endsWith(".gif")) {
             return "image/gif";
         }//end if
-        if (fileName.endsWith(".jpeg") || fileName.endsWith(".jpg")) {
+        if (fileName.endsWith(".jpeg") || fileName.endsWith(".jpg") || fileName.endsWith(".jpe")) {
             return "image/jpeg";
         }//end if
         return "application/octet-stream";
